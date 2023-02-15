@@ -1,0 +1,28 @@
+NUme....
+
+    Am folosit C.
+    In starea <INITIAL> ma duc in starea cu nume relevant tag-ului pe care il gasesc("<head>", "<body>", sau "<div"). De asemena, regula [^*] se afla in toate starile din program in care nu fac
+nimic, ca altfel analizatorul flex mi-ar afisa pe ecran tot ce nu face match in regulile de mai sus, fara ai da eu vreun print, aceasta fiin o problema intalnita in implementare, de asemenea am 
+presupus ca no o sa gasesc caracterul "*" intr-un fisier html din cele testate cel putin.
+    In starea <body_rule> am 3 reguli. In prima regula verific daca fac match pe vreun tag sub forma "<nume_tag". In cazul in care fac match pe "<div" at. initializez var div_tags_i cu 0, adaug 
+div-ul gasit in vectorul de div-uri char div_list[20][20] la poz. div_i, dar si in vectorul in care tin tag-urile gasite in body si anume char body_tags[20][20] si cresc contorul pt. aceast vector 
+de siruri prin body_i++, apoi ma duc in starea <div_rule>. Daca fac match pe un tag oarecare at. doar il adaug in body_tags la poz. body_i si ma duc in starea <tag_in_body>. In starea 2 dc. am 
+inchidere de body at. ma reintorc in starea <INITIAL>. Ultima regula e cea din toate.
+    In statea <tag_in_body> doar ma reintorc in strea <body_rule> cand gasesc inchiderea tag-ului prin "</nume_tag". Pt. cazul in care tag.ul se inchide cu ">", se intampla acelasi lucru, doar ca
+merge doar pt. tag.uri de tipul "<img ....>" si "<input ....>" ca doar astea 2 sunt de tipul acestea din exemplele date asa ca nu am tratat si pt. altele.
+    In stare <div_rule> daca gasesc un tag il adaug in vectorul char tags[20][20] din vectorul de structuri div_tags[20] la poz div_tags_i pt. vec. tags si aceeasi poz ca cea folosita pt div_list 
+pt. vectorul de strucuri div_tags, si anume div_i. Astfel tag-urile gasite in corpul unui div corespund div-ului din lista div_list, adica de exp. div.ul din div_list[div_i] are ca taguri pe cele 
+din vec. div_tags[div_i].tags. Apoi ma duc in starea <tag_in_div>. Cand se face match pe regula de iesire din tag-ul div, at. ma intorc in strea <body_rule> sau <INITIAL> in functie daca de var.
+inside_body care imi spun daca ies dintr-un div din corpul unui body sau nu.
+    In starea <tag_in_div> procedez asemanator ca in starea <tag_in_body>.
+    In starea <style_rule> pot ajunge doar din <head> unde match-ul unui tag se face pe "nume_tag {", fiind si salvat in vectorul syle_tags[20][20] fara ultimele 2 caractere. Apoi ma duc in
+starea <atr_in_style> daca s-a facut match. Daca am inchidere de style at. ma duc in starea <head_rule>.
+    In starea <atr_in_style> salvez atributele gasite in vectorul char atr[20][20] din vectorul de strucuri atr_style[20] asemanator ca in div(primul tag din style_tags isi are atributele in 
+prima structur din atr_style). Acest lucru se intampla doar daca se face match pe un sir de caractere urmat de ":", si e salvat ca atribut fara ultimul caracter, adica fara cele 2 puncte. Ma 
+reintorc in starea <style_rule> doar daca dau de "}", care presupune trecerea la un nou tag.
+    In starea <head_rule> ma duc in <style_rule> daca am match pe "<style>", sau in <INITIAL> daca am pe "</head>".
+    In main ma folosesc de toate informatiile stocate in toate variabilele definite in partea de %{...%}, informatii gasite prin intermediul analizatorului flex, ca apoi sa le pun pe toate cap la
+cap ca sa-mi afisez output-rile dorite pe ecran.
+    Ce nu afost acoperit din cerinta in implementare a fost afisarea de atribute din tag-uri.
+
+

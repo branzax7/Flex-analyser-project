@@ -1,28 +1,39 @@
-NUme....
+Oprea Mihail
 
-    Am folosit C.
-    In starea <INITIAL> ma duc in starea cu nume relevant tag-ului pe care il gasesc("<head>", "<body>", sau "<div"). De asemena, regula [^*] se afla in toate starile din program in care nu fac
-nimic, ca altfel analizatorul flex mi-ar afisa pe ecran tot ce nu face match in regulile de mai sus, fara ai da eu vreun print, aceasta fiin o problema intalnita in implementare, de asemenea am 
-presupus ca no o sa gasesc caracterul "*" intr-un fisier html din cele testate cel putin.
-    In starea <body_rule> am 3 reguli. In prima regula verific daca fac match pe vreun tag sub forma "<nume_tag". In cazul in care fac match pe "<div" at. initializez var div_tags_i cu 0, adaug 
-div-ul gasit in vectorul de div-uri char div_list[20][20] la poz. div_i, dar si in vectorul in care tin tag-urile gasite in body si anume char body_tags[20][20] si cresc contorul pt. aceast vector 
-de siruri prin body_i++, apoi ma duc in starea <div_rule>. Daca fac match pe un tag oarecare at. doar il adaug in body_tags la poz. body_i si ma duc in starea <tag_in_body>. In starea 2 dc. am 
-inchidere de body at. ma reintorc in starea <INITIAL>. Ultima regula e cea din toate.
-    In statea <tag_in_body> doar ma reintorc in strea <body_rule> cand gasesc inchiderea tag-ului prin "</nume_tag". Pt. cazul in care tag.ul se inchide cu ">", se intampla acelasi lucru, doar ca
-merge doar pt. tag.uri de tipul "<img ....>" si "<input ....>" ca doar astea 2 sunt de tipul acestea din exemplele date asa ca nu am tratat si pt. altele.
-    In stare <div_rule> daca gasesc un tag il adaug in vectorul char tags[20][20] din vectorul de structuri div_tags[20] la poz div_tags_i pt. vec. tags si aceeasi poz ca cea folosita pt div_list 
-pt. vectorul de strucuri div_tags, si anume div_i. Astfel tag-urile gasite in corpul unui div corespund div-ului din lista div_list, adica de exp. div.ul din div_list[div_i] are ca taguri pe cele 
-din vec. div_tags[div_i].tags. Apoi ma duc in starea <tag_in_div>. Cand se face match pe regula de iesire din tag-ul div, at. ma intorc in strea <body_rule> sau <INITIAL> in functie daca de var.
-inside_body care imi spun daca ies dintr-un div din corpul unui body sau nu.
-    In starea <tag_in_div> procedez asemanator ca in starea <tag_in_body>.
-    In starea <style_rule> pot ajunge doar din <head> unde match-ul unui tag se face pe "nume_tag {", fiind si salvat in vectorul syle_tags[20][20] fara ultimele 2 caractere. Apoi ma duc in
-starea <atr_in_style> daca s-a facut match. Daca am inchidere de style at. ma duc in starea <head_rule>.
-    In starea <atr_in_style> salvez atributele gasite in vectorul char atr[20][20] din vectorul de strucuri atr_style[20] asemanator ca in div(primul tag din style_tags isi are atributele in 
-prima structur din atr_style). Acest lucru se intampla doar daca se face match pe un sir de caractere urmat de ":", si e salvat ca atribut fara ultimul caracter, adica fara cele 2 puncte. Ma 
-reintorc in starea <style_rule> doar daca dau de "}", care presupune trecerea la un nou tag.
-    In starea <head_rule> ma duc in <style_rule> daca am match pe "<style>", sau in <INITIAL> daca am pe "</head>".
-    In main ma folosesc de toate informatiile stocate in toate variabilele definite in partea de %{...%}, informatii gasite prin intermediul analizatorului flex, ca apoi sa le pun pe toate cap la
-cap ca sa-mi afisez output-rile dorite pe ecran.
-    Ce nu afost acoperit din cerinta in implementare a fost afisarea de atribute din tag-uri.
-
-
+   I used C.
+In the <INITIAL> state, I transition to the state with a relevant name based on the tag found ("<head>",
+"<body>", or "<div>"). Additionally, the [^] rule exists in all program states where I don't do anything,
+because otherwise the flex analyzer would display on screen everything that doesn't match the rules above,
+without me giving it any print command. This was a problem encountered during implementation. I also assumed
+that we won't find the "" character in any of the tested HTML files, at least.
+In the <body_rule> state, I have 3 rules. In the first rule, I check if I match any tag in the form
+"<tag_name". If I match "<div", I initialize the div_tags_i variable with 0, add the found div to the
+div_list[20][20] char array at position div_i, and also to the vector where I keep the tags found in body,
+namely body_tags[20][20], and increment the counter for this string array through body_i++, then go to the
+<div_rule> state. If I match any other tag, I just add it to body_tags at position body_i and go to the
+<tag_in_body> state. In state 2, if I have a body closing tag, I return to the <INITIAL> state. The last
+rule is the catch-all.
+In the <tag_in_body> state, I only return to the <body_rule> state when I find the tag closing through
+"</tag_name". For the case where the tag closes with ">", the same thing happens, but it only works for
+tags like "<img ....>" and "<input ....>" as these are the only two of this type from the given examples,
+so I haven't handled it for others.
+In the <div_rule> state, if I find a tag, I add it to the char tags[20][20] array from the div_tags[20]
+structure array at position div_tags_i for the tags vector and the same position used for div_list for the
+div_tags structure array, namely div_i. Thus, the tags found in a div's body correspond to the div from the
+div_list, for example, the div from div_list[div_i] has as tags those from div_tags[div_i].tags. Then I go
+to the <tag_in_div> state. When matching the exit rule for the div tag, I return to the <body_rule> or
+<INITIAL> state depending on the inside_body variable which tells me if I'm exiting a div from within a
+body or not.
+In the <tag_in_div> state, I proceed similarly to the <tag_in_body> state.
+In the <style_rule> state, I can only get there from <head> where a tag match is made on "tag_name {", and
+it's saved in the style_tags[20][20] vector without the last 2 characters. Then I go to the <atr_in_style>
+state if a match was made. If I have a style closing tag, I go to the <head_rule> state.
+In the <atr_in_style> state, I save the found attributes in the char atr[20][20] array from the atr_style[20]
+structure array similar to div (the first tag from style_tags has its attributes in the first structure from
+atr_style). This happens only if there's a match on a string followed by ":", and it's saved as an attribute
+without the last character, i.e., without the colon. I return to the <style_rule> state only if I encounter
+"}", which implies moving to a new tag.
+In the <head_rule> state, I go to <style_rule> if I match "<style>", or to <INITIAL> if I match "</head>".
+In main, I use all the information stored in all variables defined in the %{...%} section, information found
+through the flex analyzer, and then put them all together to display the desired outputs on screen.
+What wasn't covered in the implementation requirements was the display of attributes from tags.
